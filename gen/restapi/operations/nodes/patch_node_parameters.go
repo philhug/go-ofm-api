@@ -16,7 +16,7 @@ import (
 
 	strfmt "github.com/go-openapi/strfmt"
 
-	models "github.com/philhug/go-ofmapi-server/gen/models"
+	models "github.com/philhug/go-ofmdbapi/gen/models"
 )
 
 // NewPatchNodeParams creates a new PatchNodeParams object

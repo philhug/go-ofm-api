@@ -19,9 +19,9 @@ import (
 	strfmt "github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"github.com/philhug/go-ofmapi-server/gen/restapi/operations/information"
-	"github.com/philhug/go-ofmapi-server/gen/restapi/operations/native_client"
-	"github.com/philhug/go-ofmapi-server/gen/restapi/operations/nodes"
+	"github.com/philhug/go-ofmdbapi/gen/restapi/operations/information"
+	"github.com/philhug/go-ofmdbapi/gen/restapi/operations/native_client"
+	"github.com/philhug/go-ofmdbapi/gen/restapi/operations/nodes"
 )
 
 // NewOfmdbAPI creates a new Ofmdb instance

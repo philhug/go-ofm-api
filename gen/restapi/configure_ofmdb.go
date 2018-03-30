@@ -17,7 +17,7 @@ import (
 	"github.com/philhug/go-ofmapi-server/gen/restapi/operations/nodes"
 )
 
-//go:generate swagger generate server --target ../gen --name Ofmdb --spec ../swagger.yaml --exclude-main
+//go:generate swagger generate server --target .. --name Ofmdb --spec ../../swagger.yaml --exclude-main
 
 func configureFlags(api *operations.OfmdbAPI) {
 	// api.CommandLineOptionsGroups = []swag.CommandLineOptionsGroup{ ... }

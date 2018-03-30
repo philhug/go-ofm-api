@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	models "github.com/philhug/go-ofmapi-server/gen/models"
+	models "github.com/philhug/go-ofmdbapi/gen/models"
 )
 
 // GetUserInfoOKCode is the HTTP code returned for type GetUserInfoOK
