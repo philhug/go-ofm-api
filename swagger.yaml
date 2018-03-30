@@ -1,0 +1,732 @@
+swagger: '2.0'
+basePath: /0.1
+info:
+  description: >+
+    Open flightmap data api.
+
+    Note: This is a simple conversion of the current model used by the client for compatbility. It's not indend for public use.
+  title: openflightmaps
+  version: '0.0.1'
+consumes:
+  - application/json
+produces:
+  - application/json
+security:
+  - BasicAuth: []
+definitions:
+  Database:
+    type: string
+    enum: &DBS
+      - "OAD Pending Changes"
+      - "ION originative suite"
+      - "OAD Private Workspace"
+      - "OAD Static Data"
+      - "Documents Libary"
+      - "AIS map design"
+      - "CFE definition file"
+      - "Map Regions"
+      - "OAD AIRAC Buffer"
+      - "dataOut"
+  AllDocs:
+    type: object
+    required:
+      - rows
+    properties:
+      offset:
+        type: number
+      rows:
+        type: array
+        items:
+          $ref: '#/definitions/ShortNode'
+      total_rows:
+        type: number
+  ShortNode:
+    type: object
+    properties:
+      id:
+        type: string
+      key:
+        type: string
+      value:
+        $ref: '#/definitions/ShortValue'
+  ShortValue:
+    type: object
+    properties:
+      rev:
+        type: string
+  NodeProperties:
+    type: object
+    properties:
+      "Flight Information Region":
+        type: string
+      "Last Pending Submission":
+        type: string
+      "Data Entity":
+        type: array
+        items:
+          type: string
+      "PDF Attachment":
+        type: string
+      "Executable File Client":
+        type: string
+      "Executable File Updater":
+        type: string
+      "Version":
+        type: string
+      "Effective":
+        type: string
+      "valid":
+        type: string
+  NodeList:
+    type: object
+    allOf:
+      - $ref: '#/definitions/ResponseData'
+      - type: object
+    required:
+      - items
+    properties:
+      items:
+        type: array
+        items:
+          $ref: '#/definitions/Node'
+  Node:
+    type: object
+    allOf:
+      - $ref: '#/definitions/ResponseData'
+      - $ref: '#/definitions/NodeProperties'
+    properties:
+      _id:
+        type: string
+      _rev:
+        type: string
+      _fields:
+        type: string
+      _deleted:
+        type: boolean
+      _updated:
+        type: string
+        format: datetime
+      _userId:
+        type: integer
+    required:
+      - _id
+      - _rev
+  Tags:
+    additionalProperties:
+      type: string
+    example:
+      - fir: '5'
+      - name: LSMP 5 TMA
+      - type: Ase/Abd
+  RegionList:
+    type: object
+    allOf:
+      - $ref: '#/definitions/ResponseData'
+    properties:
+      items:
+        type: array
+        items:
+          $ref: '#/definitions/Region'
+  Region:
+    type: object
+    properties:
+      id:
+        type: string
+      id_internal:
+        type: integer
+      name:
+        type: string
+    example:
+      name: Wien
+      id: LOVV
+      id_internal: 0
+  NodeQuery:
+    type: object
+    allOf:
+      - $ref: '#/definitions/NodeProperties'
+    additionalProperties:
+      type: string
+    example: {"Flight Information Region": "5", "Type": "Ase/Abd"}
+  ResponseData:
+    type: object
+    discriminator: _kind
+    required:
+      - _kind
+    properties:
+      _kind:
+        type: string
+  NodeNumberList:
+    type: object
+    allOf:
+      - $ref: '#/definitions/ResponseData'
+    required:
+      - nodelist
+    properties:
+      nodelist:
+        type: array
+        items:
+          type: string
+  User:
+    type: object
+    allOf:
+      - $ref: '#/definitions/ResponseData'
+    required:
+      - _id
+    properties:
+      _id:
+        type: string
+      permissions:
+        type: array
+        items:
+          $ref: '#/definitions/Tags'
+      organizations:
+        type: array
+        items:
+          type: integer
+  Organization:
+    type: object
+    allOf:
+      - $ref: '#/definitions/ResponseData'
+    required:
+      - _id
+    properties:
+      _id:
+        type: string
+      permissions:
+        type: array
+        items:
+          $ref: '#/definitions/Tags'
+paths:
+  /swagger.json:
+    x-swagger-pipe: swagger_raw
+  /info/regions:
+    get:
+      x-swagger-router-controller: Information
+      operationId: getRegions
+      description: 'Returns a list of available airspace regions / FIRs'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/RegionList'
+      summary: List all Regions
+      tags: ["Information"]   
+  /info/userinfo:
+    get:
+      x-swagger-router-controller: Information
+      operationId: getUserInfo
+      description: 'Returns info about the currently logged in user'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/User'
+      summary: Show user information
+      tags: ["Information"]
+  /node/_all_dbs:
+    get:
+     x-swagger-router-controller: DB
+     operationId: allDbs
+     description: 'return list of all databases'
+     responses:
+        '200':
+          description: OK
+          examples: {}
+          headers: {}
+  /node/{db}:
+    put:
+      x-swagger-router-controller: Node
+      operationId: putDb
+      parameters:
+       - description: Database name (e.g. "OAD Pending Changes")
+         name: db
+         required: true
+         in: path
+         type: string
+         enum: *DBS
+      responses:
+        '200':
+          description: OK
+          examples: {}
+          headers: {}
+      summary: Creates a new database
+      tags: ["Nodes"]
+  /node/{db}/_all_docs:
+    get:
+      x-swagger-router-controller: Node
+      operationId: allDocs
+      parameters:
+       - description: Database name (e.g. "OAD Pending Changes")
+         name: db
+         required: true
+         in: path
+         type: string
+         enum: *DBS
+      responses:
+        '200':
+          description: OK
+          examples: {}
+          headers: {}
+          schema:
+            $ref: '#/definitions/AllDocs'
+      summary: Creates a new database
+      tags: ["Nodes"]
+  /node/{db}/_changes:
+    get:
+      x-swagger-router-controller: Node
+      operationId: changesDb
+      parameters:
+       - description: Database name (e.g. "OAD Pending Changes")
+         name: db
+         required: true
+         in: path
+         type: string
+         enum: *DBS
+      responses:
+        '200':
+          description: OK
+          examples: {}
+          headers: {}
+      summary: Get Changes
+      tags: ["Nodes"]
+  /node/{db}/_create:
+    post:
+      x-swagger-router-controller: Node
+      operationId: createNode
+      description: ''
+      parameters:
+        - description: Database name (e.g. "OAD Pending Changes")
+          name: db
+          required: true
+          in: path
+          type: string
+          enum: *DBS
+        - description: Node definition
+          name: body
+          required: true
+          in: body
+          schema:
+            $ref: '#/definitions/Node'
+      responses:
+        '200':
+          description: OK
+          examples: {}
+          headers: {}
+        '400' :
+          description: "Node already exists, searchTags duplicate. searchTags generated server-side. switch to FIR+Type+Designator, returns id of existing object"
+      summary: Create new node
+      tags: ["Nodes"]
+  /node/{db}/_search:
+    post:
+      x-swagger-router-controller: Node
+      operationId: searchNode
+      description: |
+        Search for objects in openflightmaps database.
+      parameters:
+        - description: Database name (e.g. "OAD Pending Changes")
+          name: db
+          required: true
+          in: path
+          type: string
+          enum: *DBS
+        - description: "Query with name value pairs. exact matches. e.g. {region: 'LSAS', type: 'Ase/Abd'"
+          in: body
+          name: query
+          required: true
+          schema:
+            $ref: '#/definitions/NodeQuery'
+        - description: full text search in Search Tags
+          in: query
+          name: fulltext
+          required: false
+          type: string
+        - description: return deleted nodes
+          in: query
+          name: deleted
+          default: false
+          required: false
+          type: boolean
+        - description: bounding box (left,bottom,right,top)
+          in: query
+          name: bbox
+          required: false
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/NodeNumberList'
+      summary: Search
+      tags: ["Nodes"]
+  /node/{db}/_multi:
+    get:
+      x-swagger-router-controller: Node
+      operationId: getMultipleNodes
+      description: ''
+      parameters:
+        - description: Database name (e.g. oad)
+          name: db
+          required: true
+          in: path
+          type: string
+          enum: *DBS
+        - description: Unique node identifiers
+          in: query
+          name: nodes
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/NodeList'
+          headers: {}
+      summary: Get multiple node data
+      tags: ["Nodes"]
+  /node/{db}/{id}:
+    delete:
+      x-swagger-router-controller: Node
+      operationId: deleteNode
+      parameters:
+        - description: Database name (e.g. oad)
+          name: db
+          required: true
+          in: path
+          type: string
+          enum: *DBS
+        - description: Unique node identifier
+          in: path
+          name: id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          examples: {}
+          headers: {}
+        '404':
+          description: Node not found
+      summary: Delete
+      tags: ["Nodes"]
+    get:
+      x-swagger-router-controller: Node
+      operationId: getNode
+      description: ''
+      parameters:
+        - description: Database name (e.g. oad)
+          name: db
+          required: true
+          in: path
+          type: string
+          enum: *DBS
+        - description: Unique node identifier
+          in: path
+          name: id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Node'
+          headers: {}
+      summary: Get node data
+      tags: ["Nodes"]
+    put:
+      x-swagger-router-controller: Node
+      operationId: updateNode
+      description: ''
+      parameters:
+        - description: Database name (e.g. oad)
+          name: db
+          required: true
+          in: path
+          type: string
+          enum: *DBS
+        - description: Unique node identifier
+          in: path
+          name: id
+          required: true
+          type: string
+        - description: Node definition
+          name: body
+          required: true
+          in: body
+          schema:
+            $ref: '#/definitions/Node'
+      responses:
+        '200':
+          description: OK
+          examples: {}
+          headers: {}
+      summary: Replace node with new node
+      tags: ["Nodes"]
+    patch:
+      x-swagger-router-controller: Node
+      operationId: patchNode
+      description: ''
+      parameters:
+        - description: Database name (e.g. oad)
+          name: db
+          required: true
+          in: path
+          type: string
+          enum: *DBS
+        - description: Unique node identifier
+          in: path
+          name: id
+          required: true
+          type: string
+        - description: Node definition
+          name: body
+          required: true
+          in: body
+          schema:
+            $ref: '#/definitions/Node'
+      responses:
+        '200':
+          description: OK
+          examples: {}
+          schema:
+            $ref: '#/definitions/Node'
+          headers: {}
+      summary: Partially update fields of a node
+      tags: ["Nodes"]
+  /nativeclient/org/{id}:
+    delete:
+      x-swagger-router-controller: NativeClient
+      operationId: deleteOrgNode
+      parameters:
+        - description: Unique identifier
+          in: path
+          name: id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          examples: {}
+          schema:
+            $ref: '#/definitions/Organization'
+          headers: {}
+        '404':
+          description: Node not found
+      summary: Delete
+      tags: ["NativeClient"]
+    get:
+      x-swagger-router-controller: NativeClient
+      operationId: getOrgNode
+      description: ''
+      parameters:
+        - description: Unique identifier
+          in: path
+          name: id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Organization'
+      summary: Get node data
+      tags: ["NativeClient"]
+    put:
+      x-swagger-router-controller: NativeClient
+      operationId: updateOrgNode
+      description: ''
+      parameters:
+        - description: Unique identifier
+          in: path
+          name: id
+          required: true
+          type: string
+        - description: Node definition
+          name: body
+          required: true
+          in: body
+          schema:
+            $ref: '#/definitions/Organization'
+      responses:
+        '200':
+          description: OK
+      summary: Replace node
+      tags: ["NativeClient"]
+  /nativeclient/org/_create:
+    put:
+      x-swagger-router-controller: NativeClient
+      operationId: createOrgNode
+      description: ''
+      parameters:
+        - description: Node definition
+          name: body
+          required: true
+          in: body
+          schema:
+            $ref: '#/definitions/Organization'
+      responses:
+        '200':
+          description: OK
+      summary: Create new organisation
+      tags: ["NativeClient"]
+  /nativeclient/org/_search:
+    post:
+      x-swagger-router-controller: NativeClient
+      operationId: searchOrgNode
+      description: |
+        Return all org objects in database.
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/NodeNumberList'
+      summary: Search
+      tags: ["NativeClient"]
+  /nativeclient/user/{id}:
+    delete:
+      x-swagger-router-controller: NativeClient
+      operationId: deleteUserNode
+      parameters:
+        - description: Unique identifier
+          in: path
+          name: id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          headers: {}
+        '404':
+          description: Node not found
+      summary: Delete
+      tags: ["NativeClient"]
+    get:
+      x-swagger-router-controller: NativeClient
+      operationId: getUserNode
+      description: ''
+      parameters:
+        - description: Unique identifier
+          in: path
+          name: id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Node'
+      summary: Get node data
+      tags: ["NativeClient"]
+    put:
+      x-swagger-router-controller: NativeClient
+      operationId: updateUserNode
+      description: ''
+      parameters:
+        - description: Unique identifier
+          in: path
+          name: id
+          required: true
+          type: string
+        - description: Node definition
+          name: body
+          required: true
+          in: body
+          schema:
+            $ref: '#/definitions/Node'
+      responses:
+        '200':
+          description: OK
+      summary: Replace node
+      tags: ["NativeClient"]
+  /nativeclient/user/_create:
+    put:
+      x-swagger-router-controller: NativeClient
+      operationId: createUserNode
+      description: ''
+      parameters:
+        - description: Node definition
+          name: body
+          required: true
+          in: body
+          schema:
+            $ref: '#/definitions/Node'
+      responses:
+        '200':
+          description: OK
+      summary: Create new organisation
+      tags: ["NativeClient"]
+  /nativeclient/user/_search:
+    post:
+      x-swagger-router-controller: NativeClient
+      operationId: searchUserNode
+      description: |
+        Return all org objects in database.
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/NodeNumberList'
+      summary: Search
+      tags: ["NativeClient"]
+  /nativeclient/permissions/{id}:
+    get:
+      x-swagger-router-controller: NativeClient
+      operationId: getUserPermissionNode
+      description: ''
+      parameters:
+        - description: Unique identifier
+          in: path
+          name: id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Node'
+      summary: Get user permissions
+      tags: ["NativeClient"]
+  /blobstore/{id}:
+    get:
+      x-swagger-router-controller: BlobStore
+      operationId: getBlob
+      description: ''
+      produces:
+        - application/octet-stream
+      parameters:
+        - description: Unique blob identifier
+          in: path
+          name: id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: file
+      summary: Get Blob
+      tags: ["NativeClient"]
+  /blobstore/_create:
+    put:
+      x-swagger-router-controller: BlobStore
+      operationId: createBlob
+      description: ''
+      consumes:
+        - application/octet-stream
+      parameters:
+        - description: Binary data
+          name: body
+          required: true
+          in: body
+          schema:
+            type: string
+            format: byte
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Node'
+      summary: Create new blob
+      tags: ["NativeClient"]
+securityDefinitions:
+  BasicAuth:
+    type: basic
