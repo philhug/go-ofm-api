@@ -110,13 +110,6 @@ func unmarshalResponseData(data []byte, consumer runtime.Consumer) (ResponseData
 		}
 		return &result, nil
 
-	case "NodeNumberList":
-		var result NodeNumberList
-		if err := consumer.Consume(buf2, &result); err != nil {
-			return nil, err
-		}
-		return &result, nil
-
 	case "Organization":
 		var result Organization
 		if err := consumer.Consume(buf2, &result); err != nil {

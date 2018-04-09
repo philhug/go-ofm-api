@@ -171,7 +171,7 @@ func init() {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/NodeNumberList"
+              "$ref": "#/definitions/NodeList"
             }
           }
         },
@@ -329,7 +329,7 @@ func init() {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/NodeNumberList"
+              "$ref": "#/definitions/NodeList"
             }
           }
         },
@@ -462,45 +462,6 @@ func init() {
         "responses": {
           "200": {
             "description": "OK"
-          }
-        },
-        "x-swagger-router-controller": "Node"
-      }
-    },
-    "/node/{db}/_all_docs": {
-      "get": {
-        "tags": [
-          "Nodes"
-        ],
-        "summary": "Creates a new database",
-        "operationId": "allDocs",
-        "parameters": [
-          {
-            "enum": [
-              "OAD Pending Changes",
-              "ION originative suite",
-              "OAD Private Workspace",
-              "OAD Static Data",
-              "Documents Libary",
-              "AIS map design",
-              "CFE definition file",
-              "Map Regions",
-              "OAD AIRAC Buffer",
-              "dataOut"
-            ],
-            "type": "string",
-            "description": "Database name (e.g. \"OAD Pending Changes\")",
-            "name": "db",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/AllDocs"
-            }
           }
         },
         "x-swagger-router-controller": "Node"
@@ -697,7 +658,7 @@ func init() {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/NodeNumberList"
+              "$ref": "#/definitions/NodeList"
             }
           }
         },
@@ -897,29 +858,193 @@ func init() {
         "x-swagger-router-controller": "Node"
       }
     },
+    "/node/{db}/{id}/{attname}": {
+      "get": {
+        "produces": [
+          "application/octet-stream"
+        ],
+        "tags": [
+          "Nodes"
+        ],
+        "summary": "Get Blob",
+        "operationId": "getAttachment",
+        "parameters": [
+          {
+            "enum": [
+              "OAD Pending Changes",
+              "ION originative suite",
+              "OAD Private Workspace",
+              "OAD Static Data",
+              "Documents Libary",
+              "AIS map design",
+              "CFE definition file",
+              "Map Regions",
+              "OAD AIRAC Buffer",
+              "dataOut"
+            ],
+            "type": "string",
+            "description": "Database name (e.g. oad)",
+            "name": "db",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "Unique node identifier",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "Unique blob identifier",
+            "name": "attname",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "file"
+            }
+          }
+        },
+        "x-swagger-router-controller": "Node"
+      },
+      "put": {
+        "produces": [
+          "application/octet-stream"
+        ],
+        "tags": [
+          "Nodes"
+        ],
+        "summary": "Get Blob",
+        "operationId": "putAttachment",
+        "parameters": [
+          {
+            "enum": [
+              "OAD Pending Changes",
+              "ION originative suite",
+              "OAD Private Workspace",
+              "OAD Static Data",
+              "Documents Libary",
+              "AIS map design",
+              "CFE definition file",
+              "Map Regions",
+              "OAD AIRAC Buffer",
+              "dataOut"
+            ],
+            "type": "string",
+            "description": "Database name (e.g. oad)",
+            "name": "db",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "Unique node identifier",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "Unique blob identifier",
+            "name": "attname",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "file"
+            }
+          }
+        },
+        "x-swagger-router-controller": "Node"
+      },
+      "delete": {
+        "produces": [
+          "application/octet-stream"
+        ],
+        "tags": [
+          "Nodes"
+        ],
+        "summary": "Get Blob",
+        "operationId": "deleteAttachment",
+        "parameters": [
+          {
+            "enum": [
+              "OAD Pending Changes",
+              "ION originative suite",
+              "OAD Private Workspace",
+              "OAD Static Data",
+              "Documents Libary",
+              "AIS map design",
+              "CFE definition file",
+              "Map Regions",
+              "OAD AIRAC Buffer",
+              "dataOut"
+            ],
+            "type": "string",
+            "description": "Database name (e.g. oad)",
+            "name": "db",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "Unique node identifier",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "Unique blob identifier",
+            "name": "attname",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "file"
+            }
+          }
+        },
+        "x-swagger-router-controller": "Node"
+      }
+    },
     "/swagger.json": {
       "x-swagger-pipe": "swagger_raw"
     }
   },
   "definitions": {
-    "AllDocs": {
+    "Attachment": {
       "type": "object",
-      "required": [
-        "rows"
-      ],
       "properties": {
-        "offset": {
-          "type": "number"
+        "content_type": {
+          "type": "string"
         },
-        "rows": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ShortNode"
-          }
+        "data": {
+          "type": "string"
         },
-        "total_rows": {
-          "type": "number"
+        "stub": {
+          "type": "boolean"
         }
+      }
+    },
+    "Attachments": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/Attachment"
       }
     },
     "Database": {
@@ -952,6 +1077,9 @@ func init() {
         }
       ],
       "properties": {
+        "_attachments": {
+          "$ref": "#/definitions/Attachments"
+        },
         "_deleted": {
           "type": "boolean"
         },
@@ -995,38 +1123,68 @@ func init() {
         }
       }
     },
-    "NodeNumberList": {
-      "type": "object",
-      "required": [
-        "nodelist"
-      ],
-      "allOf": [
-        {
-          "$ref": "#/definitions/ResponseData"
-        }
-      ],
-      "properties": {
-        "nodelist": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "NodeProperties": {
       "type": "object",
       "properties": {
+        "AIPSection_1AD_2ENR_3GEN_4OTHER": {
+          "type": "string"
+        },
+        "Appproval Date": {
+          "type": "string"
+        },
+        "Approved": {
+          "type": "string"
+        },
+        "Approved By User": {
+          "type": "string"
+        },
+        "Bounding Box": {
+          "type": "string"
+        },
+        "Built": {
+          "type": "string"
+        },
+        "Built Beta": {
+          "type": "string"
+        },
+        "Comment File": {
+          "type": "string"
+        },
+        "Coordinate Notation": {
+          "type": "string"
+        },
+        "CurrentVersion": {
+          "type": "string"
+        },
         "Data Entity": {
           "type": "array",
           "items": {
             "type": "string"
-          }
+          },
+          "x-omitempty": true
+        },
+        "Datestamp": {
+          "type": "string"
+        },
+        "Designator": {
+          "type": "string"
+        },
+        "Document Reference": {
+          "type": "string"
         },
         "Effective": {
           "type": "string"
         },
         "Executable File Client": {
+          "type": "string"
+        },
+        "Executable File Client Beta": {
+          "type": "string"
+        },
+        "Executable File Client Beta x64": {
+          "type": "string"
+        },
+        "Executable File Client x64": {
           "type": "string"
         },
         "Executable File Updater": {
@@ -1035,16 +1193,84 @@ func init() {
         "Flight Information Region": {
           "type": "string"
         },
+        "ICAO": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-omitempty": true
+        },
         "Last Pending Submission": {
           "type": "string"
         },
         "PDF Attachment": {
           "type": "string"
         },
+        "Page Nbr": {
+          "type": "string"
+        },
+        "Revision": {
+          "type": "string"
+        },
+        "Type": {
+          "type": "string"
+        },
+        "User": {
+          "type": "string"
+        },
         "Version": {
           "type": "string"
         },
+        "beta tester msg": {
+          "type": "string"
+        },
+        "binary": {
+          "type": "string"
+        },
+        "epsgRasterTilePath": {
+          "type": "string"
+        },
+        "file storage location": {
+          "type": "string"
+        },
+        "geo frame": {
+          "type": "string"
+        },
+        "geoReferenceMapping": {
+          "type": "string"
+        },
+        "geoReferencedImage": {
+          "type": "string"
+        },
+        "image": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-omitempty": true
+        },
+        "lastCommitMsg": {
+          "type": "string"
+        },
+        "locked": {
+          "type": "string"
+        },
+        "lookup values": {
+          "type": "string"
+        },
+        "rtf": {
+          "type": "string"
+        },
+        "sectionFrameXml": {
+          "type": "string"
+        },
+        "typeOfDocument_0pdf_1gri": {
+          "type": "string"
+        },
         "valid": {
+          "type": "string"
+        },
+        "xml": {
           "type": "string"
         }
       }
@@ -1132,28 +1358,6 @@ func init() {
         }
       },
       "discriminator": "_kind"
-    },
-    "ShortNode": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string"
-        },
-        "key": {
-          "type": "string"
-        },
-        "value": {
-          "$ref": "#/definitions/ShortValue"
-        }
-      }
-    },
-    "ShortValue": {
-      "type": "object",
-      "properties": {
-        "rev": {
-          "type": "string"
-        }
-      }
     },
     "Tags": {
       "additionalProperties": {
@@ -1365,7 +1569,7 @@ func init() {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/NodeNumberList"
+              "$ref": "#/definitions/NodeList"
             }
           }
         },
@@ -1523,7 +1727,7 @@ func init() {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/NodeNumberList"
+              "$ref": "#/definitions/NodeList"
             }
           }
         },
@@ -1656,45 +1860,6 @@ func init() {
         "responses": {
           "200": {
             "description": "OK"
-          }
-        },
-        "x-swagger-router-controller": "Node"
-      }
-    },
-    "/node/{db}/_all_docs": {
-      "get": {
-        "tags": [
-          "Nodes"
-        ],
-        "summary": "Creates a new database",
-        "operationId": "allDocs",
-        "parameters": [
-          {
-            "enum": [
-              "OAD Pending Changes",
-              "ION originative suite",
-              "OAD Private Workspace",
-              "OAD Static Data",
-              "Documents Libary",
-              "AIS map design",
-              "CFE definition file",
-              "Map Regions",
-              "OAD AIRAC Buffer",
-              "dataOut"
-            ],
-            "type": "string",
-            "description": "Database name (e.g. \"OAD Pending Changes\")",
-            "name": "db",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/AllDocs"
-            }
           }
         },
         "x-swagger-router-controller": "Node"
@@ -1891,7 +2056,7 @@ func init() {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/NodeNumberList"
+              "$ref": "#/definitions/NodeList"
             }
           }
         },
@@ -2091,29 +2256,193 @@ func init() {
         "x-swagger-router-controller": "Node"
       }
     },
+    "/node/{db}/{id}/{attname}": {
+      "get": {
+        "produces": [
+          "application/octet-stream"
+        ],
+        "tags": [
+          "Nodes"
+        ],
+        "summary": "Get Blob",
+        "operationId": "getAttachment",
+        "parameters": [
+          {
+            "enum": [
+              "OAD Pending Changes",
+              "ION originative suite",
+              "OAD Private Workspace",
+              "OAD Static Data",
+              "Documents Libary",
+              "AIS map design",
+              "CFE definition file",
+              "Map Regions",
+              "OAD AIRAC Buffer",
+              "dataOut"
+            ],
+            "type": "string",
+            "description": "Database name (e.g. oad)",
+            "name": "db",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "Unique node identifier",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "Unique blob identifier",
+            "name": "attname",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/getAttachmentOKBody"
+            }
+          }
+        },
+        "x-swagger-router-controller": "Node"
+      },
+      "put": {
+        "produces": [
+          "application/octet-stream"
+        ],
+        "tags": [
+          "Nodes"
+        ],
+        "summary": "Get Blob",
+        "operationId": "putAttachment",
+        "parameters": [
+          {
+            "enum": [
+              "OAD Pending Changes",
+              "ION originative suite",
+              "OAD Private Workspace",
+              "OAD Static Data",
+              "Documents Libary",
+              "AIS map design",
+              "CFE definition file",
+              "Map Regions",
+              "OAD AIRAC Buffer",
+              "dataOut"
+            ],
+            "type": "string",
+            "description": "Database name (e.g. oad)",
+            "name": "db",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "Unique node identifier",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "Unique blob identifier",
+            "name": "attname",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/putAttachmentOKBody"
+            }
+          }
+        },
+        "x-swagger-router-controller": "Node"
+      },
+      "delete": {
+        "produces": [
+          "application/octet-stream"
+        ],
+        "tags": [
+          "Nodes"
+        ],
+        "summary": "Get Blob",
+        "operationId": "deleteAttachment",
+        "parameters": [
+          {
+            "enum": [
+              "OAD Pending Changes",
+              "ION originative suite",
+              "OAD Private Workspace",
+              "OAD Static Data",
+              "Documents Libary",
+              "AIS map design",
+              "CFE definition file",
+              "Map Regions",
+              "OAD AIRAC Buffer",
+              "dataOut"
+            ],
+            "type": "string",
+            "description": "Database name (e.g. oad)",
+            "name": "db",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "Unique node identifier",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "Unique blob identifier",
+            "name": "attname",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/deleteAttachmentOKBody"
+            }
+          }
+        },
+        "x-swagger-router-controller": "Node"
+      }
+    },
     "/swagger.json": {
       "x-swagger-pipe": "swagger_raw"
     }
   },
   "definitions": {
-    "AllDocs": {
+    "Attachment": {
       "type": "object",
-      "required": [
-        "rows"
-      ],
       "properties": {
-        "offset": {
-          "type": "number"
+        "content_type": {
+          "type": "string"
         },
-        "rows": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ShortNode"
-          }
+        "data": {
+          "type": "string"
         },
-        "total_rows": {
-          "type": "number"
+        "stub": {
+          "type": "boolean"
         }
+      }
+    },
+    "Attachments": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/Attachment"
       }
     },
     "Database": {
@@ -2146,6 +2475,9 @@ func init() {
         }
       ],
       "properties": {
+        "_attachments": {
+          "$ref": "#/definitions/Attachments"
+        },
         "_deleted": {
           "type": "boolean"
         },
@@ -2189,38 +2521,68 @@ func init() {
         }
       }
     },
-    "NodeNumberList": {
-      "type": "object",
-      "required": [
-        "nodelist"
-      ],
-      "allOf": [
-        {
-          "$ref": "#/definitions/ResponseData"
-        }
-      ],
-      "properties": {
-        "nodelist": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "NodeProperties": {
       "type": "object",
       "properties": {
+        "AIPSection_1AD_2ENR_3GEN_4OTHER": {
+          "type": "string"
+        },
+        "Appproval Date": {
+          "type": "string"
+        },
+        "Approved": {
+          "type": "string"
+        },
+        "Approved By User": {
+          "type": "string"
+        },
+        "Bounding Box": {
+          "type": "string"
+        },
+        "Built": {
+          "type": "string"
+        },
+        "Built Beta": {
+          "type": "string"
+        },
+        "Comment File": {
+          "type": "string"
+        },
+        "Coordinate Notation": {
+          "type": "string"
+        },
+        "CurrentVersion": {
+          "type": "string"
+        },
         "Data Entity": {
           "type": "array",
           "items": {
             "type": "string"
-          }
+          },
+          "x-omitempty": true
+        },
+        "Datestamp": {
+          "type": "string"
+        },
+        "Designator": {
+          "type": "string"
+        },
+        "Document Reference": {
+          "type": "string"
         },
         "Effective": {
           "type": "string"
         },
         "Executable File Client": {
+          "type": "string"
+        },
+        "Executable File Client Beta": {
+          "type": "string"
+        },
+        "Executable File Client Beta x64": {
+          "type": "string"
+        },
+        "Executable File Client x64": {
           "type": "string"
         },
         "Executable File Updater": {
@@ -2229,16 +2591,84 @@ func init() {
         "Flight Information Region": {
           "type": "string"
         },
+        "ICAO": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-omitempty": true
+        },
         "Last Pending Submission": {
           "type": "string"
         },
         "PDF Attachment": {
           "type": "string"
         },
+        "Page Nbr": {
+          "type": "string"
+        },
+        "Revision": {
+          "type": "string"
+        },
+        "Type": {
+          "type": "string"
+        },
+        "User": {
+          "type": "string"
+        },
         "Version": {
           "type": "string"
         },
+        "beta tester msg": {
+          "type": "string"
+        },
+        "binary": {
+          "type": "string"
+        },
+        "epsgRasterTilePath": {
+          "type": "string"
+        },
+        "file storage location": {
+          "type": "string"
+        },
+        "geo frame": {
+          "type": "string"
+        },
+        "geoReferenceMapping": {
+          "type": "string"
+        },
+        "geoReferencedImage": {
+          "type": "string"
+        },
+        "image": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-omitempty": true
+        },
+        "lastCommitMsg": {
+          "type": "string"
+        },
+        "locked": {
+          "type": "string"
+        },
+        "lookup values": {
+          "type": "string"
+        },
+        "rtf": {
+          "type": "string"
+        },
+        "sectionFrameXml": {
+          "type": "string"
+        },
+        "typeOfDocument_0pdf_1gri": {
+          "type": "string"
+        },
         "valid": {
+          "type": "string"
+        },
+        "xml": {
           "type": "string"
         }
       }
@@ -2327,28 +2757,6 @@ func init() {
       },
       "discriminator": "_kind"
     },
-    "ShortNode": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string"
-        },
-        "key": {
-          "type": "string"
-        },
-        "value": {
-          "$ref": "#/definitions/ShortValue"
-        }
-      }
-    },
-    "ShortValue": {
-      "type": "object",
-      "properties": {
-        "rev": {
-          "type": "string"
-        }
-      }
-    },
     "Tags": {
       "additionalProperties": {
         "type": "string"
@@ -2393,7 +2801,19 @@ func init() {
         }
       }
     },
+    "deleteAttachmentOKBody": {
+      "type": "file",
+      "x-go-gen-location": "operations"
+    },
+    "getAttachmentOKBody": {
+      "type": "file",
+      "x-go-gen-location": "operations"
+    },
     "getBlobOKBody": {
+      "type": "file",
+      "x-go-gen-location": "operations"
+    },
+    "putAttachmentOKBody": {
       "type": "file",
       "x-go-gen-location": "operations"
     }

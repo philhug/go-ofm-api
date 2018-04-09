@@ -21,6 +21,9 @@ import (
 type Node struct {
 	NodeProperties
 
+	// attachments
+	Attachments Attachments `json:"_attachments,omitempty"`
+
 	// deleted
 	Deleted bool `json:"_deleted,omitempty"`
 
@@ -53,6 +56,8 @@ func (m *Node) SetKind(val string) {
 func (m *Node) UnmarshalJSON(raw []byte) error {
 	var data struct {
 		NodeProperties
+
+		Attachments Attachments `json:"_attachments,omitempty"`
 
 		Deleted bool `json:"_deleted,omitempty"`
 
@@ -96,6 +101,9 @@ func (m *Node) UnmarshalJSON(raw []byte) error {
 
 	result.NodeProperties = data.NodeProperties
 
+	// _attachments
+	result.Attachments = data.Attachments
+
 	// _deleted
 	result.Deleted = data.Deleted
 
@@ -126,6 +134,8 @@ func (m Node) MarshalJSON() ([]byte, error) {
 	b1, err = json.Marshal(struct {
 		NodeProperties
 
+		Attachments Attachments `json:"_attachments,omitempty"`
+
 		Deleted bool `json:"_deleted,omitempty"`
 
 		Fields string `json:"_fields,omitempty"`
@@ -140,6 +150,8 @@ func (m Node) MarshalJSON() ([]byte, error) {
 	}{
 
 		NodeProperties: m.NodeProperties,
+
+		Attachments: m.Attachments,
 
 		Deleted: m.Deleted,
 

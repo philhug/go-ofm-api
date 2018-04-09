@@ -13,7 +13,7 @@ import (
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
 
-	models "github.com/philhug/go-ofmdbapi/gen/models"
+	models "github.com/philhug/go-ofm-api/gen/models"
 )
 
 // NewCreateUserNodeParams creates a new CreateUserNodeParams object

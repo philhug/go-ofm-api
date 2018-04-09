@@ -11,10 +11,10 @@ import (
 
 	strfmt "github.com/go-openapi/strfmt"
 
-	"github.com/philhug/go-ofmapi-server/gen/client/information"
-	"github.com/philhug/go-ofmapi-server/gen/client/native_client"
-	"github.com/philhug/go-ofmapi-server/gen/client/nodes"
-	"github.com/philhug/go-ofmapi-server/gen/client/operations"
+	"github.com/philhug/go-ofm-api/gen/client/information"
+	"github.com/philhug/go-ofm-api/gen/client/native_client"
+	"github.com/philhug/go-ofm-api/gen/client/nodes"
+	"github.com/philhug/go-ofm-api/gen/client/operations"
 )
 
 // Default ofmdb HTTP client.

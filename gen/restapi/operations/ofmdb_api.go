@@ -19,9 +19,9 @@ import (
 	strfmt "github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"github.com/philhug/go-ofmdbapi/gen/restapi/operations/information"
-	"github.com/philhug/go-ofmdbapi/gen/restapi/operations/native_client"
-	"github.com/philhug/go-ofmdbapi/gen/restapi/operations/nodes"
+	"github.com/philhug/go-ofm-api/gen/restapi/operations/information"
+	"github.com/philhug/go-ofm-api/gen/restapi/operations/native_client"
+	"github.com/philhug/go-ofm-api/gen/restapi/operations/nodes"
 )
 
 // NewOfmdbAPI creates a new Ofmdb instance
@@ -46,9 +46,6 @@ func NewOfmdbAPI(spec *loads.Document) *OfmdbAPI {
 		AllDbsHandler: AllDbsHandlerFunc(func(params AllDbsParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation AllDbs has not yet been implemented")
 		}),
-		NodesAllDocsHandler: nodes.AllDocsHandlerFunc(func(params nodes.AllDocsParams, principal interface{}) middleware.Responder {
-			return middleware.NotImplemented("operation NodesAllDocs has not yet been implemented")
-		}),
 		NodesChangesDbHandler: nodes.ChangesDbHandlerFunc(func(params nodes.ChangesDbParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation NodesChangesDb has not yet been implemented")
 		}),
@@ -64,6 +61,9 @@ func NewOfmdbAPI(spec *loads.Document) *OfmdbAPI {
 		NativeClientCreateUserNodeHandler: native_client.CreateUserNodeHandlerFunc(func(params native_client.CreateUserNodeParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation NativeClientCreateUserNode has not yet been implemented")
 		}),
+		NodesDeleteAttachmentHandler: nodes.DeleteAttachmentHandlerFunc(func(params nodes.DeleteAttachmentParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation NodesDeleteAttachment has not yet been implemented")
+		}),
 		NodesDeleteNodeHandler: nodes.DeleteNodeHandlerFunc(func(params nodes.DeleteNodeParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation NodesDeleteNode has not yet been implemented")
 		}),
@@ -72,6 +72,9 @@ func NewOfmdbAPI(spec *loads.Document) *OfmdbAPI {
 		}),
 		NativeClientDeleteUserNodeHandler: native_client.DeleteUserNodeHandlerFunc(func(params native_client.DeleteUserNodeParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation NativeClientDeleteUserNode has not yet been implemented")
+		}),
+		NodesGetAttachmentHandler: nodes.GetAttachmentHandlerFunc(func(params nodes.GetAttachmentParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation NodesGetAttachment has not yet been implemented")
 		}),
 		NativeClientGetBlobHandler: native_client.GetBlobHandlerFunc(func(params native_client.GetBlobParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation NativeClientGetBlob has not yet been implemented")
@@ -99,6 +102,9 @@ func NewOfmdbAPI(spec *loads.Document) *OfmdbAPI {
 		}),
 		NodesPatchNodeHandler: nodes.PatchNodeHandlerFunc(func(params nodes.PatchNodeParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation NodesPatchNode has not yet been implemented")
+		}),
+		NodesPutAttachmentHandler: nodes.PutAttachmentHandlerFunc(func(params nodes.PutAttachmentParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation NodesPutAttachment has not yet been implemented")
 		}),
 		NodesPutDbHandler: nodes.PutDbHandlerFunc(func(params nodes.PutDbParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation NodesPutDb has not yet been implemented")
@@ -175,8 +181,6 @@ type OfmdbAPI struct {
 
 	// AllDbsHandler sets the operation handler for the all dbs operation
 	AllDbsHandler AllDbsHandler
-	// NodesAllDocsHandler sets the operation handler for the all docs operation
-	NodesAllDocsHandler nodes.AllDocsHandler
 	// NodesChangesDbHandler sets the operation handler for the changes db operation
 	NodesChangesDbHandler nodes.ChangesDbHandler
 	// NativeClientCreateBlobHandler sets the operation handler for the create blob operation
@@ -187,12 +191,16 @@ type OfmdbAPI struct {
 	NativeClientCreateOrgNodeHandler native_client.CreateOrgNodeHandler
 	// NativeClientCreateUserNodeHandler sets the operation handler for the create user node operation
 	NativeClientCreateUserNodeHandler native_client.CreateUserNodeHandler
+	// NodesDeleteAttachmentHandler sets the operation handler for the delete attachment operation
+	NodesDeleteAttachmentHandler nodes.DeleteAttachmentHandler
 	// NodesDeleteNodeHandler sets the operation handler for the delete node operation
 	NodesDeleteNodeHandler nodes.DeleteNodeHandler
 	// NativeClientDeleteOrgNodeHandler sets the operation handler for the delete org node operation
 	NativeClientDeleteOrgNodeHandler native_client.DeleteOrgNodeHandler
 	// NativeClientDeleteUserNodeHandler sets the operation handler for the delete user node operation
 	NativeClientDeleteUserNodeHandler native_client.DeleteUserNodeHandler
+	// NodesGetAttachmentHandler sets the operation handler for the get attachment operation
+	NodesGetAttachmentHandler nodes.GetAttachmentHandler
 	// NativeClientGetBlobHandler sets the operation handler for the get blob operation
 	NativeClientGetBlobHandler native_client.GetBlobHandler
 	// NodesGetMultipleNodesHandler sets the operation handler for the get multiple nodes operation
@@ -211,6 +219,8 @@ type OfmdbAPI struct {
 	NativeClientGetUserPermissionNodeHandler native_client.GetUserPermissionNodeHandler
 	// NodesPatchNodeHandler sets the operation handler for the patch node operation
 	NodesPatchNodeHandler nodes.PatchNodeHandler
+	// NodesPutAttachmentHandler sets the operation handler for the put attachment operation
+	NodesPutAttachmentHandler nodes.PutAttachmentHandler
 	// NodesPutDbHandler sets the operation handler for the put db operation
 	NodesPutDbHandler nodes.PutDbHandler
 	// NodesSearchNodeHandler sets the operation handler for the search node operation
@@ -304,10 +314,6 @@ func (o *OfmdbAPI) Validate() error {
 		unregistered = append(unregistered, "AllDbsHandler")
 	}
 
-	if o.NodesAllDocsHandler == nil {
-		unregistered = append(unregistered, "nodes.AllDocsHandler")
-	}
-
 	if o.NodesChangesDbHandler == nil {
 		unregistered = append(unregistered, "nodes.ChangesDbHandler")
 	}
@@ -328,6 +334,10 @@ func (o *OfmdbAPI) Validate() error {
 		unregistered = append(unregistered, "native_client.CreateUserNodeHandler")
 	}
 
+	if o.NodesDeleteAttachmentHandler == nil {
+		unregistered = append(unregistered, "nodes.DeleteAttachmentHandler")
+	}
+
 	if o.NodesDeleteNodeHandler == nil {
 		unregistered = append(unregistered, "nodes.DeleteNodeHandler")
 	}
@@ -338,6 +348,10 @@ func (o *OfmdbAPI) Validate() error {
 
 	if o.NativeClientDeleteUserNodeHandler == nil {
 		unregistered = append(unregistered, "native_client.DeleteUserNodeHandler")
+	}
+
+	if o.NodesGetAttachmentHandler == nil {
+		unregistered = append(unregistered, "nodes.GetAttachmentHandler")
 	}
 
 	if o.NativeClientGetBlobHandler == nil {
@@ -374,6 +388,10 @@ func (o *OfmdbAPI) Validate() error {
 
 	if o.NodesPatchNodeHandler == nil {
 		unregistered = append(unregistered, "nodes.PatchNodeHandler")
+	}
+
+	if o.NodesPutAttachmentHandler == nil {
+		unregistered = append(unregistered, "nodes.PutAttachmentHandler")
 	}
 
 	if o.NodesPutDbHandler == nil {
@@ -526,11 +544,6 @@ func (o *OfmdbAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/node/{db}/_all_docs"] = nodes.NewAllDocs(o.context, o.NodesAllDocsHandler)
-
-	if o.handlers["GET"] == nil {
-		o.handlers["GET"] = make(map[string]http.Handler)
-	}
 	o.handlers["GET"]["/node/{db}/_changes"] = nodes.NewChangesDb(o.context, o.NodesChangesDbHandler)
 
 	if o.handlers["PUT"] == nil {
@@ -556,6 +569,11 @@ func (o *OfmdbAPI) initHandlerCache() {
 	if o.handlers["DELETE"] == nil {
 		o.handlers["DELETE"] = make(map[string]http.Handler)
 	}
+	o.handlers["DELETE"]["/node/{db}/{id}/{attname}"] = nodes.NewDeleteAttachment(o.context, o.NodesDeleteAttachmentHandler)
+
+	if o.handlers["DELETE"] == nil {
+		o.handlers["DELETE"] = make(map[string]http.Handler)
+	}
 	o.handlers["DELETE"]["/node/{db}/{id}"] = nodes.NewDeleteNode(o.context, o.NodesDeleteNodeHandler)
 
 	if o.handlers["DELETE"] == nil {
@@ -567,6 +585,11 @@ func (o *OfmdbAPI) initHandlerCache() {
 		o.handlers["DELETE"] = make(map[string]http.Handler)
 	}
 	o.handlers["DELETE"]["/nativeclient/user/{id}"] = native_client.NewDeleteUserNode(o.context, o.NativeClientDeleteUserNodeHandler)
+
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/node/{db}/{id}/{attname}"] = nodes.NewGetAttachment(o.context, o.NodesGetAttachmentHandler)
 
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
@@ -612,6 +635,11 @@ func (o *OfmdbAPI) initHandlerCache() {
 		o.handlers["PATCH"] = make(map[string]http.Handler)
 	}
 	o.handlers["PATCH"]["/node/{db}/{id}"] = nodes.NewPatchNode(o.context, o.NodesPatchNodeHandler)
+
+	if o.handlers["PUT"] == nil {
+		o.handlers["PUT"] = make(map[string]http.Handler)
+	}
+	o.handlers["PUT"]["/node/{db}/{id}/{attname}"] = nodes.NewPutAttachment(o.context, o.NodesPutAttachmentHandler)
 
 	if o.handlers["PUT"] == nil {
 		o.handlers["PUT"] = make(map[string]http.Handler)

@@ -13,7 +13,7 @@ import (
 
 	strfmt "github.com/go-openapi/strfmt"
 
-	models "github.com/philhug/go-ofmapi-server/gen/models"
+	models "github.com/philhug/go-ofm-api/gen/models"
 )
 
 // SearchUserNodeReader is a Reader for the SearchUserNode structure.
@@ -47,7 +47,7 @@ func NewSearchUserNodeOK() *SearchUserNodeOK {
 OK
 */
 type SearchUserNodeOK struct {
-	Payload *models.NodeNumberList
+	Payload *models.NodeList
 }
 
 func (o *SearchUserNodeOK) Error() string {
@@ -56,7 +56,7 @@ func (o *SearchUserNodeOK) Error() string {
 
 func (o *SearchUserNodeOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.NodeNumberList)
+	o.Payload = new(models.NodeList)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	models "github.com/philhug/go-ofmdbapi/gen/models"
+	models "github.com/philhug/go-ofm-api/gen/models"
 )
 
 // SearchOrgNodeOKCode is the HTTP code returned for type SearchOrgNodeOK
@@ -25,7 +25,7 @@ type SearchOrgNodeOK struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.NodeNumberList `json:"body,omitempty"`
+	Payload *models.NodeList `json:"body,omitempty"`
 }
 
 // NewSearchOrgNodeOK creates SearchOrgNodeOK with default headers values
@@ -35,13 +35,13 @@ func NewSearchOrgNodeOK() *SearchOrgNodeOK {
 }
 
 // WithPayload adds the payload to the search org node o k response
-func (o *SearchOrgNodeOK) WithPayload(payload *models.NodeNumberList) *SearchOrgNodeOK {
+func (o *SearchOrgNodeOK) WithPayload(payload *models.NodeList) *SearchOrgNodeOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the search org node o k response
-func (o *SearchOrgNodeOK) SetPayload(payload *models.NodeNumberList) {
+func (o *SearchOrgNodeOK) SetPayload(payload *models.NodeList) {
 	o.Payload = payload
 }
 

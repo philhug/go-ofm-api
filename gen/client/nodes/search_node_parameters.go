@@ -18,7 +18,7 @@ import (
 
 	strfmt "github.com/go-openapi/strfmt"
 
-	models "github.com/philhug/go-ofmapi-server/gen/models"
+	models "github.com/philhug/go-ofm-api/gen/models"
 )
 
 // NewSearchNodeParams creates a new SearchNodeParams object

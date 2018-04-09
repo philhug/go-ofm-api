@@ -13,7 +13,7 @@ import (
 
 	strfmt "github.com/go-openapi/strfmt"
 
-	models "github.com/philhug/go-ofmapi-server/gen/models"
+	models "github.com/philhug/go-ofm-api/gen/models"
 )
 
 // CreateBlobReader is a Reader for the CreateBlob structure.

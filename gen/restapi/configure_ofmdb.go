@@ -11,10 +11,10 @@ import (
 	middleware "github.com/go-openapi/runtime/middleware"
 	graceful "github.com/tylerb/graceful"
 
-	"github.com/philhug/go-ofmapi-server/gen/restapi/operations"
-	"github.com/philhug/go-ofmapi-server/gen/restapi/operations/information"
-	"github.com/philhug/go-ofmapi-server/gen/restapi/operations/native_client"
-	"github.com/philhug/go-ofmapi-server/gen/restapi/operations/nodes"
+	"github.com/philhug/go-ofm-api/gen/restapi/operations"
+	"github.com/philhug/go-ofm-api/gen/restapi/operations/information"
+	"github.com/philhug/go-ofm-api/gen/restapi/operations/native_client"
+	"github.com/philhug/go-ofm-api/gen/restapi/operations/nodes"
 )
 
 //go:generate swagger generate server --target .. --name Ofmdb --spec ../../swagger.yaml --exclude-main
@@ -42,9 +42,9 @@ func configureAPI(api *operations.OfmdbAPI) http.Handler {
 	api.BinProducer = runtime.ByteStreamProducer()
 
 	// Applies when the Authorization header is set with the Basic scheme
-	api.BasicAuthAuth = func(user string, pass string) (interface{}, error) {
-		return nil, errors.NotImplemented("basic auth  (BasicAuth) has not yet been implemented")
-	}
+	//api.BasicAuthAuth = func(user string, pass string) (interface{}, error) {
+	//	return nil, errors.NotImplemented("basic auth  (BasicAuth) has not yet been implemented")
+	//}
 
 	// Set your custom authorizer if needed. Default one is security.Authorized()
 	// Expected interface runtime.Authorizer
@@ -54,9 +54,6 @@ func configureAPI(api *operations.OfmdbAPI) http.Handler {
 
 	api.AllDbsHandler = operations.AllDbsHandlerFunc(func(params operations.AllDbsParams, principal interface{}) middleware.Responder {
 		return middleware.NotImplemented("operation .AllDbs has not yet been implemented")
-	})
-	api.NodesAllDocsHandler = nodes.AllDocsHandlerFunc(func(params nodes.AllDocsParams, principal interface{}) middleware.Responder {
-		return middleware.NotImplemented("operation nodes.AllDocs has not yet been implemented")
 	})
 	api.NodesChangesDbHandler = nodes.ChangesDbHandlerFunc(func(params nodes.ChangesDbParams, principal interface{}) middleware.Responder {
 		return middleware.NotImplemented("operation nodes.ChangesDb has not yet been implemented")

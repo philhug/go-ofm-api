@@ -6,6 +6,8 @@ package nodes
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"io"
+
 	"github.com/go-openapi/runtime"
 
 	strfmt "github.com/go-openapi/strfmt"
@@ -22,35 +24,6 @@ Client for nodes API
 type Client struct {
 	transport runtime.ClientTransport
 	formats   strfmt.Registry
-}
-
-/*
-AllDocs creates a new database
-*/
-func (a *Client) AllDocs(params *AllDocsParams, authInfo runtime.ClientAuthInfoWriter) (*AllDocsOK, error) {
-	// TODO: Validate the params before sending
-	if params == nil {
-		params = NewAllDocsParams()
-	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "allDocs",
-		Method:             "GET",
-		PathPattern:        "/node/{db}/_all_docs",
-		ProducesMediaTypes: []string{"application/json"},
-		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"http"},
-		Params:             params,
-		Reader:             &AllDocsReader{formats: a.formats},
-		AuthInfo:           authInfo,
-		Context:            params.Context,
-		Client:             params.HTTPClient,
-	})
-	if err != nil {
-		return nil, err
-	}
-	return result.(*AllDocsOK), nil
-
 }
 
 /*
@@ -112,6 +85,35 @@ func (a *Client) CreateNode(params *CreateNodeParams, authInfo runtime.ClientAut
 }
 
 /*
+DeleteAttachment gets blob
+*/
+func (a *Client) DeleteAttachment(params *DeleteAttachmentParams, authInfo runtime.ClientAuthInfoWriter, writer io.Writer) (*DeleteAttachmentOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewDeleteAttachmentParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "deleteAttachment",
+		Method:             "DELETE",
+		PathPattern:        "/node/{db}/{id}/{attname}",
+		ProducesMediaTypes: []string{"application/octet-stream"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &DeleteAttachmentReader{formats: a.formats, writer: writer},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*DeleteAttachmentOK), nil
+
+}
+
+/*
 DeleteNode deletes
 */
 func (a *Client) DeleteNode(params *DeleteNodeParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteNodeOK, error) {
@@ -137,6 +139,35 @@ func (a *Client) DeleteNode(params *DeleteNodeParams, authInfo runtime.ClientAut
 		return nil, err
 	}
 	return result.(*DeleteNodeOK), nil
+
+}
+
+/*
+GetAttachment gets blob
+*/
+func (a *Client) GetAttachment(params *GetAttachmentParams, authInfo runtime.ClientAuthInfoWriter, writer io.Writer) (*GetAttachmentOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetAttachmentParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getAttachment",
+		Method:             "GET",
+		PathPattern:        "/node/{db}/{id}/{attname}",
+		ProducesMediaTypes: []string{"application/octet-stream"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &GetAttachmentReader{formats: a.formats, writer: writer},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetAttachmentOK), nil
 
 }
 
@@ -224,6 +255,35 @@ func (a *Client) PatchNode(params *PatchNodeParams, authInfo runtime.ClientAuthI
 		return nil, err
 	}
 	return result.(*PatchNodeOK), nil
+
+}
+
+/*
+PutAttachment gets blob
+*/
+func (a *Client) PutAttachment(params *PutAttachmentParams, authInfo runtime.ClientAuthInfoWriter, writer io.Writer) (*PutAttachmentOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewPutAttachmentParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "putAttachment",
+		Method:             "PUT",
+		PathPattern:        "/node/{db}/{id}/{attname}",
+		ProducesMediaTypes: []string{"application/octet-stream"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &PutAttachmentReader{formats: a.formats, writer: writer},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*PutAttachmentOK), nil
 
 }
 

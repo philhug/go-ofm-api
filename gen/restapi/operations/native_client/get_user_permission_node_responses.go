@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	models "github.com/philhug/go-ofmdbapi/gen/models"
+	models "github.com/philhug/go-ofm-api/gen/models"
 )
 
 // GetUserPermissionNodeOKCode is the HTTP code returned for type GetUserPermissionNodeOK

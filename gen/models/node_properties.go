@@ -16,8 +16,47 @@ import (
 // swagger:model NodeProperties
 type NodeProperties struct {
 
+	// a IP section 1 a d 2 e n r 3 g e n 4 o t h e r
+	AIPSection1AD2ENR3GEN4OTHER string `json:"AIPSection_1AD_2ENR_3GEN_4OTHER,omitempty"`
+
+	// appproval date
+	AppprovalDate string `json:"Appproval Date,omitempty"`
+
+	// approved
+	Approved string `json:"Approved,omitempty"`
+
+	// approved by user
+	ApprovedByUser string `json:"Approved By User,omitempty"`
+
+	// bounding box
+	BoundingBox string `json:"Bounding Box,omitempty"`
+
+	// built
+	Built string `json:"Built,omitempty"`
+
+	// built beta
+	BuiltBeta string `json:"Built Beta,omitempty"`
+
+	// comment file
+	CommentFile string `json:"Comment File,omitempty"`
+
+	// coordinate notation
+	CoordinateNotation string `json:"Coordinate Notation,omitempty"`
+
+	// current version
+	CurrentVersion string `json:"CurrentVersion,omitempty"`
+
 	// data entity
-	DataEntity []string `json:"Data Entity"`
+	DataEntity []string `json:"Data Entity,omitempty"`
+
+	// datestamp
+	Datestamp string `json:"Datestamp,omitempty"`
+
+	// designator
+	Designator string `json:"Designator,omitempty"`
+
+	// document reference
+	DocumentReference string `json:"Document Reference,omitempty"`
 
 	// effective
 	Effective string `json:"Effective,omitempty"`
@@ -25,11 +64,23 @@ type NodeProperties struct {
 	// executable file client
 	ExecutableFileClient string `json:"Executable File Client,omitempty"`
 
+	// executable file client beta
+	ExecutableFileClientBeta string `json:"Executable File Client Beta,omitempty"`
+
+	// executable file client beta x64
+	ExecutableFileClientBetaX64 string `json:"Executable File Client Beta x64,omitempty"`
+
+	// executable file client x64
+	ExecutableFileClientX64 string `json:"Executable File Client x64,omitempty"`
+
 	// executable file updater
 	ExecutableFileUpdater string `json:"Executable File Updater,omitempty"`
 
 	// flight information region
 	FlightInformationRegion string `json:"Flight Information Region,omitempty"`
+
+	// i c a o
+	ICAO []string `json:"ICAO,omitempty"`
 
 	// last pending submission
 	LastPendingSubmission string `json:"Last Pending Submission,omitempty"`
@@ -37,11 +88,68 @@ type NodeProperties struct {
 	// p d f attachment
 	PDFAttachment string `json:"PDF Attachment,omitempty"`
 
+	// page nbr
+	PageNbr string `json:"Page Nbr,omitempty"`
+
+	// revision
+	Revision string `json:"Revision,omitempty"`
+
+	// type
+	Type string `json:"Type,omitempty"`
+
+	// user
+	User string `json:"User,omitempty"`
+
 	// version
 	Version string `json:"Version,omitempty"`
 
+	// beta tester msg
+	BetaTesterMsg string `json:"beta tester msg,omitempty"`
+
+	// binary
+	Binary string `json:"binary,omitempty"`
+
+	// epsg raster tile path
+	EpsgRasterTilePath string `json:"epsgRasterTilePath,omitempty"`
+
+	// file storage location
+	FileStorageLocation string `json:"file storage location,omitempty"`
+
+	// geo frame
+	GeoFrame string `json:"geo frame,omitempty"`
+
+	// geo reference mapping
+	GeoReferenceMapping string `json:"geoReferenceMapping,omitempty"`
+
+	// geo referenced image
+	GeoReferencedImage string `json:"geoReferencedImage,omitempty"`
+
+	// image
+	Image []string `json:"image,omitempty"`
+
+	// last commit msg
+	LastCommitMsg string `json:"lastCommitMsg,omitempty"`
+
+	// locked
+	Locked string `json:"locked,omitempty"`
+
+	// lookup values
+	LookupValues string `json:"lookup values,omitempty"`
+
+	// rtf
+	Rtf string `json:"rtf,omitempty"`
+
+	// section frame Xml
+	SectionFrameXML string `json:"sectionFrameXml,omitempty"`
+
+	// type of document 0pdf 1gri
+	TypeOfDocument0pdf1gri string `json:"typeOfDocument_0pdf_1gri,omitempty"`
+
 	// valid
 	Valid string `json:"valid,omitempty"`
+
+	// xml
+	XML string `json:"xml,omitempty"`
 }
 
 // Validate validates this node properties
@@ -49,6 +157,16 @@ func (m *NodeProperties) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.validateDataEntity(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateICAO(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateImage(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -62,6 +180,24 @@ func (m *NodeProperties) Validate(formats strfmt.Registry) error {
 func (m *NodeProperties) validateDataEntity(formats strfmt.Registry) error {
 
 	if swag.IsZero(m.DataEntity) { // not required
+		return nil
+	}
+
+	return nil
+}
+
+func (m *NodeProperties) validateICAO(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.ICAO) { // not required
+		return nil
+	}
+
+	return nil
+}
+
+func (m *NodeProperties) validateImage(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.Image) { // not required
 		return nil
 	}
 

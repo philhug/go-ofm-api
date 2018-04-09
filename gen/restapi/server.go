@@ -21,7 +21,7 @@ import (
 	flags "github.com/jessevdk/go-flags"
 	graceful "github.com/tylerb/graceful"
 
-	"github.com/philhug/go-ofmdbapi/gen/restapi/operations"
+	"github.com/philhug/go-ofm-api/gen/restapi/operations"
 )
 
 const (
