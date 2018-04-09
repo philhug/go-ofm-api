@@ -3,13 +3,12 @@ package handlers
 import (
 	sq "github.com/Masterminds/squirrel"
 
+	"bytes"
 	"github.com/go-openapi/runtime/middleware"
 	ofmdb "github.com/philhug/go-ofm-api"
 	"github.com/philhug/go-ofm-api/gen/restapi/operations/native_client"
-	"bytes"
 	"io/ioutil"
 )
-
 
 func NewNativeClientGetBlobHandler(rt *ofmdb.Runtime) native_client.GetBlobHandler {
 	return &nativeClientGetBlobHandler{rt: rt}
@@ -44,4 +43,3 @@ func (d *nativeClientGetBlobHandler) Handle(params native_client.GetBlobParams, 
 
 	return native_client.NewGetBlobOK().WithPayload(ioutil.NopCloser(bytes.NewReader(blob)))
 }
-

@@ -2,21 +2,21 @@ package handlers
 
 import (
 	"github.com/go-openapi/runtime/middleware"
+	"github.com/hashicorp/golang-lru"
 	ofmdb "github.com/philhug/go-ofm-api"
+	"github.com/philhug/go-ofm-api/gen/models"
 	"github.com/philhug/go-ofm-api/gen/restapi/operations/nodes"
 	"log"
-	"github.com/hashicorp/golang-lru"
-	"github.com/philhug/go-ofm-api/gen/models"
 	"strings"
 )
 
 func NewNodesGetNodeHandler(rt *ofmdb.Runtime) nodes.GetNodeHandler {
-	cache, _ := lru.New(1024*1024*10)
+	cache, _ := lru.New(1024 * 1024 * 10)
 	return &nodeGetNodeHandler{rt: rt, cache: cache}
 }
 
 type nodeGetNodeHandler struct {
-	rt *ofmdb.Runtime
+	rt    *ofmdb.Runtime
 	cache *lru.Cache
 }
 
@@ -44,7 +44,6 @@ func (d *nodeGetNodeHandler) Handle(params nodes.GetNodeParams, more interface{}
 	d.cache.Add(params.ID, *node)
 	return nodes.NewGetNodeOK().WithPayload(node)
 }
-
 
 func NewNodesGetMultipleNodesHandler(rt *ofmdb.Runtime) nodes.GetMultipleNodesHandler {
 	return &nodeGetMultipleNodesHandler{rt: rt}
@@ -104,4 +103,3 @@ func (d *searchNodeHandler) Handle(params nodes.SearchNodeParams, more interface
 	}
 	return nodes.NewSearchNodeOK().WithPayload(node)
 }
-

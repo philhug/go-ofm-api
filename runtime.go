@@ -32,20 +32,20 @@ func NewRuntime(app app.Application) (*Runtime, error) {
 	}
 
 	return &Runtime{
-		db:    db,
-		app:   app,
-		services: services,
+		db:               db,
+		app:              app,
+		services:         services,
 		serviceInstances: serviceInstances,
-		users: users,
+		users:            users,
 	}, nil
 }
 
 // Runtime encapsulates the shared services for this application
 type Runtime struct {
-	db    *sql.DB
-	app   app.Application
-	users *dbmodel.DbModel
-	services *dbmodel.DbModel
+	db               *sql.DB
+	app              app.Application
+	users            *dbmodel.DbModel
+	services         *dbmodel.DbModel
 	serviceInstances *dbmodel.DbModel
 }
 

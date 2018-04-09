@@ -5,9 +5,9 @@ import (
 
 	"database/sql"
 	"errors"
-	"log"
 	"fmt"
 	"github.com/philhug/go-ofm-api/gen/models"
+	"log"
 )
 
 const ()
@@ -49,12 +49,12 @@ type DbConfig struct {
 }
 
 type DbFieldType struct {
-	Id int
-	Description string
-	Format int
-	MultipleUse bool
+	Id              int
+	Description     string
+	Format          int
+	MultipleUse     bool
 	ServiceCategory int
-	Hidden bool
+	Hidden          bool
 }
 
 func (dbm *DbModel) LoadByPK(parentId *string, id string, extraFields ...interface{}) (map[string]interface{}, error) {
@@ -111,7 +111,7 @@ func (dbm *DbModel) LoadByPK(parentId *string, id string, extraFields ...interfa
 			skey := stype.Description
 			if stype.MultipleUse {
 				multi := []string{}
-				if (result[skey] != nil) {
+				if result[skey] != nil {
 					multi = result[skey].([]string)
 				}
 				result[skey] = append(multi, value)
@@ -127,16 +127,16 @@ func (dbm *DbModel) LoadByPK(parentId *string, id string, extraFields ...interfa
 func (dbm *DbModel) Query(parentId string, query map[string]interface{}, extraProperty *string) (*models.NodeList, error) {
 	db := dbm.db
 	c := dbm.config
-	pred := sq.And{sq.Eq{c.Table + ".deleted": false},sq.Eq{c.Table + "." + c.ParentColumn: parentId}}
+	pred := sq.And{sq.Eq{c.Table + ".deleted": false}, sq.Eq{c.Table + "." + c.ParentColumn: parentId}}
 
 	var extraField DbFieldType
-	qs :=  []string{c.Table + "." + c.Pk, c.Table + ".deleted", c.Table + ".Revision", c.Table + ".dateOfCreation"}
+	qs := []string{c.Table + "." + c.Pk, c.Table + ".deleted", c.Table + ".Revision", c.Table + ".dateOfCreation"}
 	if extraProperty != nil {
 		if *extraProperty != "xml" {
 			return nil, errors.New("invalid extra property")
 		}
 		extraField = dbm.typeToId[*extraProperty]
-		qs = append(qs, "d." + c.PropertyValueColumn)
+		qs = append(qs, "d."+c.PropertyValueColumn)
 	}
 	q := sq.Select(qs...).From(c.Table).Where(pred)
 
@@ -144,7 +144,7 @@ func (dbm *DbModel) Query(parentId string, query map[string]interface{}, extraPr
 		dformat := extraField.Format
 		jointable := c.DataTables[dformat]
 		join := fmt.Sprintf("%s AS %s USING (%s)", jointable, "d", c.Pk)
-		q = q.LeftJoin(join).Where(sq.Eq{"d."+c.PropertyIdColumn: extraField.Id})
+		q = q.LeftJoin(join).Where(sq.Eq{"d." + c.PropertyIdColumn: extraField.Id})
 	}
 
 	var ctr int
@@ -157,7 +157,7 @@ func (dbm *DbModel) Query(parentId string, query map[string]interface{}, extraPr
 		jointable := c.DataTables[dformat]
 		joinas := fmt.Sprintf("j%d", ctr)
 		join := fmt.Sprintf("%s AS %s USING (%s)", jointable, joinas, c.Pk)
-		q = q.Join(join).Where(sq.And{sq.Eq{joinas + "." + c.PropertyIdColumn: dId},sq.Eq{joinas + "." + c.PropertyValueColumn: value}})
+		q = q.Join(join).Where(sq.And{sq.Eq{joinas + "." + c.PropertyIdColumn: dId}, sq.Eq{joinas + "." + c.PropertyValueColumn: value}})
 		ctr++
 	}
 
@@ -177,7 +177,7 @@ func (dbm *DbModel) Query(parentId string, query map[string]interface{}, extraPr
 		if err := rows.Scan(scanFields...); err != nil {
 			return nil, err
 		}
-		result.Items = append (result.Items, &node)
+		result.Items = append(result.Items, &node)
 	}
 	return &result, nil
 }

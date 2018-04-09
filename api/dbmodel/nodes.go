@@ -1,13 +1,13 @@
 package dbmodel
 
 import (
+	"bytes"
 	"database/sql"
 	"encoding/json"
+	"errors"
 	sq "github.com/Masterminds/squirrel"
 	"github.com/philhug/go-ofm-api/gen/models"
 	"log"
-	"bytes"
-	"errors"
 )
 
 func NewServicesDBModel(db *sql.DB) (*DbModel, error) {

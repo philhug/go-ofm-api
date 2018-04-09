@@ -2,8 +2,8 @@ package dbmodel
 
 import (
 	"database/sql"
-	"github.com/philhug/go-ofm-api/gen/models"
 	"encoding/json"
+	"github.com/philhug/go-ofm-api/gen/models"
 )
 
 func NewUsersDBModel(db *sql.DB) (*DbModel, error) {
